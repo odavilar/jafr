@@ -57,5 +57,8 @@ $(main):
 sixpair:
 	gcc libs/sixpair.c -o libs/sixpair -lusb
 
+jstest:
+	gcc libs/jstest.c -o libs/jstest
+
 clean:
 	  rm -f $(main) $(objects) $(deps)
