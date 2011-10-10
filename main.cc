@@ -23,7 +23,7 @@ int main(int argc, char *argv[]){
 	fd = serialport_init(serialport, baudrate);
 	if(fd == -1) return -1;
 	printf("Serial Port %s was initialized succesfully", serialport);
-	
+
 	/*
 	 *
 	 * TRACKING BLUE OBJECT
@@ -88,7 +88,7 @@ int main(int argc, char *argv[]){
 
 		for (CvBlobs::const_iterator it = blobs.begin(); it != blobs.end(); ++it)
 		{
-		//	cout << "Blob #" << it->second->label << ": Area=" << it->second->area << ", Centroid=(" << it->second->centroid.x << ", " << it->second->centroid.y << ")" << endl;
+			//	cout << "Blob #" << it->second->label << ": Area=" << it->second->area << ", Centroid=(" << it->second->centroid.x << ", " << it->second->centroid.y << ")" << endl;
 			if(it->second->centroid.x > limit_right){
 				buf[0] = 49;
 				int rc = serialport_write(fd, buf);
