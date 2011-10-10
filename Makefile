@@ -54,5 +54,8 @@ $(main):
 	$(P)CXX
 	$(Q)$(CXX) $(CXXFLAGS) -MMD -o $@ -c $<
 
+sixpair:
+	gcc libs/sixpair.c -o libs/sixpair -lusb
+
 clean:
 	  rm -f $(main) $(objects) $(deps)
