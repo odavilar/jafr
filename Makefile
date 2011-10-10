@@ -1,5 +1,5 @@
 cxxobjects := main.o
-cobjects := src/serial.o
+cobjects := src/threads.o src/serial.o
 objects := $(cobjects) $(cxxobjects)
 version := 2.0
 

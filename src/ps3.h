@@ -13,21 +13,9 @@
 #include <linux/input.h>
 #include <linux/joystick.h>
 
-char *axis_names[ABS_MAX + 1] = {
-	"X", "Y", "Z", "Rx", "Ry", "Rz", "Throttle", "Rudder", 
-	"Wheel", "Gas", "Brake", "?", "?", "?", "?", "?",
-	"Hat0X", "Hat0Y", "Hat1X", "Hat1Y", "Hat2X", "Hat2Y", "Hat3X", "Hat3Y",
-	"?", "?", "?", "?", "?", "?", "?", 
-};
+char *axis_names[ABS_MAX + 1] = {"X", "Y", "Z", "Rx", "Ry", "Rz", "Throttle", "Rudder", "Wheel", "Gas", "Brake", "?", "?", "?", "?", "?","Hat0X", "Hat0Y", "Hat1X", "Hat1Y", "Hat2X", "Hat2Y", "Hat3X", "Hat3Y","?", "?", "?", "?", "?", "?", "?" };
 
-char *button_names[KEY_MAX - BTN_MISC + 1] = {
-	"Btn0", "Btn1", "Btn2", "Btn3", "Btn4", "Btn5", "Btn6", "Btn7", "Btn8", "Btn9", "?", "?", "?", "?", "?", "?",
-	"LeftBtn", "RightBtn", "MiddleBtn", "SideBtn", "ExtraBtn", "ForwardBtn", "BackBtn", "TaskBtn", "?", "?", "?", "?", "?", "?", "?", "?",
-	"Trigger", "ThumbBtn", "ThumbBtn2", "TopBtn", "TopBtn2", "PinkieBtn", "BaseBtn", "BaseBtn2", "BaseBtn3", "BaseBtn4", "BaseBtn5", "BaseBtn6", "BtnDead",
-	"BtnA", "BtnB", "BtnC", "BtnX", "BtnY", "BtnZ", "BtnTL", "BtnTR", "BtnTL2", "BtnTR2", "BtnSelect", "BtnStart", "BtnMode", "BtnThumbL", "BtnThumbR", "?",
-	"?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?", 
-	"WheelBtn", "Gear up",
-};
+char *button_names[KEY_MAX - BTN_MISC + 1] = {"Btn0", "Btn1", "Btn2", "Btn3", "Btn4", "Btn5", "Btn6", "Btn7", "Btn8", "Btn9", "?", "?", "?", "?", "?", "?",	"LeftBtn", "RightBtn", "MiddleBtn", "SideBtn", "ExtraBtn", "ForwardBtn", "BackBtn", "TaskBtn", "?", "?", "?", "?", "?", "?", "?", "?",	"Trigger", "ThumbBtn", "ThumbBtn2", "TopBtn", "TopBtn2", "PinkieBtn", "BaseBtn", "BaseBtn2", "BaseBtn3", "BaseBtn4", "BaseBtn5", "BaseBtn6", "BtnDead","BtnA", "BtnB", "BtnC", "BtnX", "BtnY", "BtnZ", "BtnTL", "BtnTR", "BtnTL2", "BtnTR2", "BtnSelect", "BtnStart", "BtnMode", "BtnThumbL", "BtnThumbR", "?","?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?","WheelBtn", "Gear up" };
 
 #define NAME_LENGTH 128
 
@@ -64,7 +52,7 @@ ioctl(fd, JSIOCGVERSION, &version);
 		axis = (int*)calloc(axes, sizeof(int));
 		button = (char*)calloc(buttons, sizeof(char));
 
-//		while (1) {
+		while (1) {
 			if (read(fd, &js, sizeof(struct js_event)) != sizeof(struct js_event)) {
 				perror("\njstest: error reading");
 				return 1;
@@ -94,5 +82,5 @@ ioctl(fd, JSIOCGVERSION, &version);
 			}
 
 			fflush(stdout);
-//		}
+		}
 }
