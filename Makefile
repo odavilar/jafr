@@ -7,8 +7,8 @@ CC := gcc
 CXX := g++
 PLATFORM := $(shell uname -s)
 
-EXTRA_CXXFLAGS := $(shell pkg-config --cflags gtkmm-3.0)
-EXTRA_LIBS := $(shell pkg-config --libs gtkmm-3.0) -I/usr/include/linux/
+EXTRA_CXXFLAGS := $(shell pkg-config --cflags glibmm-2.4 opencv cvblob)
+EXTRA_LIBS := $(shell pkg-config --libs glibmm-2.4 opencv cvblob)
 
 ifdef DEBUG
 CFLAGS += -ggdb
