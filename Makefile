@@ -17,7 +17,7 @@ CFLAGS += -O2
 endif
  
 CXXFLAGS += $(EXTRA_CXXFLAGS) -Wall -Wextra -ansi
-CFLAGS += -g -c -Wall -Wstrict-prototypes -Wextra -ansi -std=c99 -DOSNAME_LINUX
+CFLAGS += -Wall -Wstrict-prototypes -Wextra -ansi -DOSNAME_LINUX -std=c99 
 LDFLAGS := -Wl,--no-undefined
  
 cxxsources := $(objects.o=.cc)

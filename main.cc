@@ -1,4 +1,5 @@
 #include "src/utils.h"
+#include <unistd.h>
 
 int main(int argc, char *argv[]){
 
@@ -85,6 +86,8 @@ int main(int argc, char *argv[]){
 		cvRenderTracks(tracks, frame, frame, CV_TRACK_RENDER_ID|CV_TRACK_RENDER_BOUNDING_BOX);
 
 		cvShowImage("Tracking_Blue_Object", frame);
+
+		ps3();
 
 		for (CvBlobs::const_iterator it = blobs.begin(); it != blobs.end(); ++it)
 		{

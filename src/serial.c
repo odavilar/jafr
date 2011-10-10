@@ -16,6 +16,7 @@
  */
 
 #include "serial.h"
+#include <unistd.h>
 
 int serialport_write(int fd, const char* str)
 {
