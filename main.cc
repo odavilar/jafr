@@ -1,25 +1,16 @@
-#include <iostream>
-#include <iomanip>
-#include "main.h"
-extern "C" {
-#include "serial.h"
-}
-#if (defined(_WIN32) || defined(__WIN32__) || defined(__TOS_WIN__) || defined(__WINDOWS__) || (defined(__APPLE__) & defined(__MACH__)))
-#include <cv.h>
-#include <highgui.h>
-#else
-#include <opencv/cv.h>
-#include <opencv/highgui.h>
-#endif
-#include <cvblob.h>
-
-using namespace cvb;
-using namespace std;
+#include "src/utils.h"
 
 int main(int argc, char *argv[]){
 
+	if (argc == 1) {
+		usage();
+		exit(EXIT_SUCCESS);
+	}
+
 	/*
+	 *
 	 * SERIAL PORT INITIALIZATION
+	 *
 	 */
 
 	int fd = 0;
@@ -27,26 +18,16 @@ int main(int argc, char *argv[]){
 	int baudrate = B9600;  // default
 	char buf[1];
 
-	if (argc==1) {
-		usage();
-		exit(EXIT_SUCCESS);
-	}
-
-
-	strcpy(serialport,argv[1]);
+	strcpy(serialport, argv[1]);
 
 	fd = serialport_init(serialport, baudrate);
-	if(fd==-1) return -1;
+	if(fd == -1) return -1;
 	printf("Serial Port %s was initialized succesfully", serialport);
+	
 	/*
-	   int rc = serialport_write(fd, buf);
-	   if(rc==-1) return -1;
-
-	   serialport_read_until(fd, buf, '\n');
-	   printf("read: %s\n",buf);
-	   */
-	/*
+	 *
 	 * TRACKING BLUE OBJECT
+	 *
 	 */
 
 	CvTracks tracks;
@@ -78,10 +59,8 @@ int main(int argc, char *argv[]){
 
 		IplImage *segmentated = cvCreateImage(imgSize, 8, 1);
 
-		// Detecting red pixels:
-		// (This is very slow, use direct access better...)
-		for (unsigned int j=0; j<imgSize.height; j++)
-			for (unsigned int i=0; i<imgSize.width; i++)
+		for (unsigned int j = 0; j < (unsigned int)imgSize.height; j++)
+			for (unsigned int i = 0; i < (unsigned int)imgSize.width; i++)
 			{
 				CvScalar c = cvGet2D(frame, j, i);
 
@@ -95,8 +74,6 @@ int main(int argc, char *argv[]){
 
 		cvMorphologyEx(segmentated, segmentated, NULL, morphKernel, CV_MOP_OPEN, 1);
 
-		//cvShowImage("segmentated", segmentated);
-
 		IplImage *labelImg = cvCreateImage(cvGetSize(frame), IPL_DEPTH_LABEL, 1);
 
 		CvBlobs blobs;
@@ -109,8 +86,7 @@ int main(int argc, char *argv[]){
 
 		cvShowImage("Tracking_Blue_Object", frame);
 
-
-		for (CvBlobs::const_iterator it=blobs.begin(); it!=blobs.end(); ++it)
+		for (CvBlobs::const_iterator it = blobs.begin(); it != blobs.end(); ++it)
 		{
 		//	cout << "Blob #" << it->second->label << ": Area=" << it->second->area << ", Centroid=(" << it->second->centroid.x << ", " << it->second->centroid.y << ")" << endl;
 			if(it->second->centroid.x > limit_right){
@@ -136,16 +112,11 @@ int main(int argc, char *argv[]){
 			usleep(5000);
 		}
 
-		/*
-		std::stringstream filename;
-		  filename << "redobject_" << std::setw(5) << std::setfill('0') << frameNumber << ".png";
-		  cvSaveImage(filename.str().c_str(), frame);
-		  */
-
 		cvReleaseImage(&labelImg);
 		cvReleaseImage(&segmentated);
 
-		char k = cvWaitKey(10)&0xff;
+		char k = cvWaitKey(10) & 0xff;
+
 		switch (k)
 		{
 			case 27:
@@ -161,7 +132,6 @@ int main(int argc, char *argv[]){
 					filename << "redobject_blob_" << std::setw(5) << std::setfill('0') << blobNumber << ".png";
 					cvSaveImageBlob(filename.str().c_str(), img, it->second);
 					blobNumber++;
-
 					std::cout << filename.str() << " saved!" << std::endl;
 				}
 				break;
@@ -169,12 +139,10 @@ int main(int argc, char *argv[]){
 
 		cvReleaseBlobs(blobs);
 
-		//frameNumber++;
 	}
 
 	cvReleaseStructuringElement(&morphKernel);
 	cvReleaseImage(&frame);
-
 	cvDestroyWindow("Tracking_Blue_Object");
 
 	return 0;
