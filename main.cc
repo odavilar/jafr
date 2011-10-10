@@ -58,12 +58,15 @@ int main(int argc, char *argv[]){
 	IplImage *img = cvRetrieveFrame(capture);
 
 	CvSize imgSize = cvGetSize(img);
-
+	int limit_up = (imgSize.height/2)+50;
+	int limit_down = (imgSize.height/2)-50;
+	int limit_left= (imgSize.width/2)-50;
+	int limit_right = (imgSize.width/2)+50;
 	IplImage *frame = cvCreateImage(imgSize, img->depth, img->nChannels);
 
 	IplConvKernel* morphKernel = cvCreateStructuringElementEx(5, 5, 1, 1, CV_SHAPE_RECT, NULL);
 
-	unsigned int frameNumber = 0;
+	//unsigned int frameNumber = 0;
 	unsigned int blobNumber = 0;
 
 	bool quit = false;
@@ -110,32 +113,34 @@ int main(int argc, char *argv[]){
 		for (CvBlobs::const_iterator it=blobs.begin(); it!=blobs.end(); ++it)
 		{
 		//	cout << "Blob #" << it->second->label << ": Area=" << it->second->area << ", Centroid=(" << it->second->centroid.x << ", " << it->second->centroid.y << ")" << endl;
-			if(it->second->centroid.x > 400){
+			if(it->second->centroid.x > limit_right){
 				buf[0] = 49;
 				int rc = serialport_write(fd, buf);
 				if(rc==-1) return -1;
 			}
-			if(it->second->centroid.x < 200){
+			if(it->second->centroid.x < limit_left){
 				buf[0] = 50;
 				int rc = serialport_write(fd, buf);
 				if(rc==-1) return -1;
 			}
-			if(it->second->centroid.y > 300){
+			if(it->second->centroid.y > limit_up){
 				buf[0] = 51;
 				int rc = serialport_write(fd, buf);
 				if(rc==-1) return -1;
 			}
-			if(it->second->centroid.y < 200){
+			if(it->second->centroid.y < limit_down){
 				buf[0] = 52;
 				int rc = serialport_write(fd, buf);
 				if(rc==-1) return -1;
 			}
-			usleep(50000);
+			usleep(5000);
 		}
 
+		/*
 		std::stringstream filename;
 		  filename << "redobject_" << std::setw(5) << std::setfill('0') << frameNumber << ".png";
 		  cvSaveImage(filename.str().c_str(), frame);
+		  */
 
 		cvReleaseImage(&labelImg);
 		cvReleaseImage(&segmentated);
